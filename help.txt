@@ -1,0 +1,13 @@
+welcome to the schools library!
+here you can use a bunch of commands for accessing, deleting or adding data to the base
+add using:
+	'add student' ==> for adding a student
+	'add book' ==> for adding a book
+access using:
+	'show students' ==> for accessing all students gathered data
+	'show student' ==> for accessing a special student's data
+	'show books' ==> for accessing all books gathered data
+	'show book' ==> for accessing a specific book's data
+"remove data:
+	'del student' ==> to remove a specific piece of information related to a student
+	'del book' ==> to remove a specific piece of information related to a book
