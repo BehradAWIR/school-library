@@ -47,10 +47,9 @@ while True:
     cmd = input("please enter a command or ask for help using '-h': ")
     ##COMMADS RELATED TO STUDETNS
     if cmd == '-h':
-        print ("welcome to the schools library! \n here you can use a bunch of commands for accessing, deleting or adding data to the base \n")
-        print ("add using: \n 'add student' ==> for adding a student \n 'add book' ==> for adding a book \n")
-        print ("access using: \n 'show students' ==> for accessing all students gathered data \n 'show student' ==> for accessing a special student's data \n 'show books' ==> for accessing all books gathered data \n 'show book' ==> for accessing a specific book's data \n")
-        print ("remove data: \n 'del student' ==> to remove a specific piece of information related to a student \n 'del book' ==> to remove a specific piece of information related to a book \n")
+        helpFile = open("help.txt", "r")
+        pr = helpFile.read()
+        print (pr)
     elif cmd == "add student":
         while_flag=True
         while (while_flag):
