@@ -1,3 +1,0 @@
-"name" "lastname" "email" "password" "phone No." "credit"
-Behrad Hemati 13Behrad2004@gmail.com Behrad2004 09353138100 12000
-AmirAli gohari AmirGohar@gmail.com AG123 09125959670 15000
