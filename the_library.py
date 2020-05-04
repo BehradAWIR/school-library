@@ -1,25 +1,30 @@
+##TODO
+## MAKE A DEF TO PRINT A DICT
+## MAKE ALL CMDS ADAPTED TO DICTIONARY SUSTEM
+
 ##IMPORTS
+import json
 from sys import stderr
 
 ##CLASS DEFINED
-class Student:
-    def __init__(self, username):
-        self.username = username
+# class Student:
+#     def __init__(self, username):
+#         self.username = username
 
-    def show(self):
-        print(self.username)
+#     def show(self):
+#         print(self.username)
 
-    def show_all(self):
-        print(self.username, end="")
+#     def show_all(self):
+#         print(self.username, end="")
 
 
-class Book:
-    def __init__(self, title, price):
-        self.title = title
-        self.price = int(price)
+# class Book:
+#     def __init__(self, title, price):
+#         self.title = title
+#         self.price = int(price)
 
-    def show(self):
-        print ("title: ",self.title, " | price: ", self.price)
+#     def show(self):
+#         print ("title: ",self.title, " | price: ", self.price)
 
 
 ##FUNCTIONS
@@ -29,50 +34,109 @@ def error(key):
     print("Error:", ERRORS[key], file=stderr)
     return
 
+def full_list_dict_print(inp_list, dict_args):
+    for i in inp_list:
+        for j in dict_args:
+            print (i[j], end=" ")
+        print()
+
+def dict_print(dicti):
+    for i in dicti:
+        print(i, end=" ")
+    print()
+
+##TESTINGS
+# with open("users.json", "w") as j:
+#    json.dump("", j)
+# with open("books.json", "w") as j:
+#     json.dump("", j)
+
 
 ##INITIAL VARS
+books = []
+students = []
 ERRORS = {'NotFoundUser': "the username was not found, please try again",
           'invalReq': "the request is invalid, please try again",
           'invalString':"sorry, please enter a number",
           'NotFoundBook': "the book was not found, please try again",
           'usedUser': "sorry, the username has been taken",
+          'usedEmail': "sorry, the e-mail has been used before",
           'usedTitle': "sorry, but a book with the same title exists"}
 
-new_std = Student("Mojtaba")
-books = []
-students = [new_std]
+j =  open("books.json", "r")
+books = json.load(j)
+
+j = open("users.json", "r")
+students = json.load(j)
+print (students)
 
 ##MAIN
 while True:
-    cmd = input("please enter a command or ask for help using '-h': ")
-    ##COMMADS RELATED TO STUDETNS
-    if cmd == '-h':
-        helpFile = open("help.txt", "r")
+    cmd = input("please enter a command or ask for help using 'h': ")
+    ##HELP COMMANDS
+    if cmd == 'h':
+        helpFile = open('help.txt', "r")
         pr = helpFile.read()
         print (pr)
+
+    ##COMMADS RELATED TO STUDENTS
     elif cmd == "add student":
+        new_students_data = {"name": "",
+                             "lastName" : "",
+                             "e-mail": "",
+                             "username": "",}
+        new_students_data["name"] = input("please enter your name or 'return': ")
+        if new_students_data["name"] == "return":
+            continue
+
+        new_students_data["lastName"] = input("please enter your lastname or 'return': ")
+        if new_students_data["lastName"] == "return":
+            continue
+
         while_flag=True
         while (while_flag):
-            username = input("please enter the chosen username or 'return': ")
-            if username == "return":
+            new_students_data["e_mail"] = input("please enter your e-mail adress or 'return': ")
+            if new_students_data["e_mail"] == "return":
                 while_flag=False
                 continue
-            flag = True
+            execute_flag = True
             for i in students:
-                if i.username == username:
-                    error("usedUser")
-                    flag=False
+                if i["e-mail"] == new_students_data["e-mail"]:
+                    execute_flag = False
+                    error("usedEmail")
+            if (execute_flag):
+                break
+        if not while_flag:
+            continue
 
-            if (flag):
-                new_std = Student(username)
-                students.append(new_std)
-                while_flag = flag = False
+        while_flag=True
+        while (while_flag):
+            new_students_data["username"] = input("please enter a username or 'return': ")
+            if new_students_data["username"] == "return":
+                while_flag=False
+                continue
+            execute_flag=True
+            for i in students:
+                if i["username"] == new_students_data["username"]:
+                    execute_flag == False
+                    error("usedUser")
+
+            if (execute_flag):
+                break
+            
+        if not while_flag:
+            continue
+        
+        students.append(new_students_data)
+        with open("users.json", "w") as j:
+            json.dump(students, j)
+        print("task finished sucessfully")
+
+
     elif cmd == "show students":
-        for i in students:
-            if (i.username != "Mojtaba"):
-                print(" ", end = "")
-            i.show_all()
-        print ("")
+        full_list_dict_print(students)
+        print()
+
     elif cmd == "show student":
         flag = True
         while (flag):
@@ -81,8 +145,8 @@ while True:
                 flag=False
                 continue
             for i in students:
-                if i.username == username:
-                    i.show()
+                if i["username"] == username:
+                    dict_print(i)
                     flag=False
                     break
             if flag:
@@ -96,13 +160,17 @@ while True:
                 continue
             flag=True
             for i in range(len(students)):
-                if (username == students[i].username):
-                    ans = input ("are you sure of deleting this username?(yes/ no)")
+                if (username == students[i]["username"]):
+                    ans = input ("are you sure of deleting this students data?(yes/ no)")
                     flag=False
                     while_flag = False
                     if (ans == "yes"):
                         students.pop(i)
+                        with open("users.json", "w") as j:
+                            json.dump(students, j)
+                        print("task achieved successfully")
                         break
+                        
             if flag:
                 error("NotFoundUser")
 
