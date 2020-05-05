@@ -34,16 +34,13 @@ def error(key):
     print("Error:", ERRORS[key], file=stderr)
     return
 
-def full_list_dict_print(inp_list, dict_args):
-    for i in inp_list:
-        for j in dict_args:
-            print (i[j], end=" ")
-        print()
-
 def dict_print(dicti):
     for key, val in dicti.items():
         print("    ",key,": ", val)
-    print()
+
+def full_list_dict_print(inp_list):
+    for i in inp_list:
+        dict_print(i)
 
 ##INITIAL VARS
 books = []
