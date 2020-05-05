@@ -47,21 +47,16 @@ def dict_print(dicti):
 
 ##INITIAL VARS
 books = []
-students = []
-ERRORS = {'NotFoundUser': "the username was not found, please try again",
-          'invalReq': "the request is invalid, please try again",
-          'invalString':"sorry, please enter a number",
-          'NotFoundBook': "the book was not found, please try again",
-          'usedUser': "sorry, the username has been taken",
-          'usedEmail': "sorry, the e-mail has been used before",
-          'usedTitle': "sorry, but a book with the same title exists"}
+students = [] 
 
-j =  open("books.json", "r")
-books = json.load(j)
+with open("books.json", "r") as j:
+    books = json.load(j)
 
-j = open("users.json", "r")
-students = json.load(j)
-print (students)
+with  open("users.json", "r") as j:
+    students = json.load(j)
+
+with open("ERRORS.json", "r") as j:
+    ERRORS = json.load(j)
 
 ##MAIN
 while True:
