@@ -41,16 +41,9 @@ def full_list_dict_print(inp_list, dict_args):
         print()
 
 def dict_print(dicti):
-    for i in dicti:
-        print(i, end=" ")
+    for key, val in dicti.items():
+        print("    ",key,": ", val)
     print()
-
-##TESTINGS
-# with open("users.json", "w") as j:
-#    json.dump("", j)
-# with open("books.json", "w") as j:
-#     json.dump("", j)
-
 
 ##INITIAL VARS
 books = []
@@ -95,15 +88,17 @@ while True:
 
         while_flag=True
         while (while_flag):
-            new_students_data["e_mail"] = input("please enter your e-mail adress or 'return': ")
-            if new_students_data["e_mail"] == "return":
+            new_students_data["e-mail"] = input("please enter your e-mail adress or 'return': ")
+            if new_students_data["e-mail"] == "return":
                 while_flag=False
                 continue
             execute_flag = True
             for i in students:
                 if i["e-mail"] == new_students_data["e-mail"]:
+                    print(i)
                     execute_flag = False
                     error("usedEmail")
+                    new_students_data.pop("e-mail")
             if (execute_flag):
                 break
         if not while_flag:
@@ -128,6 +123,7 @@ while True:
             continue
         
         students.append(new_students_data)
+        print(students)
         with open("users.json", "w") as j:
             json.dump(students, j)
         print("task finished sucessfully")
@@ -146,6 +142,7 @@ while True:
                 continue
             for i in students:
                 if i["username"] == username:
+                    print("user found successfully:")
                     dict_print(i)
                     flag=False
                     break
