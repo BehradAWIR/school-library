@@ -1,7 +1,3 @@
-##TODO
-## MAKE A DEF TO PRINT A DICT
-## MAKE ALL CMDS ADAPTED TO DICTIONARY SUSTEM
-
 ##IMPORTS
 import json
 from sys import stderr
@@ -41,6 +37,12 @@ def dict_print(dicti):
 def full_list_dict_print(inp_list):
     for i in inp_list:
         dict_print(i)
+
+def search_in_list_of_dicts(search_this, in_here, arg):
+    for i in range (len(in_here)):
+        if in_here[i][arg] == search_this:
+            return True, i
+    return False, 0
 
 ##INITIAL VARS
 books = []
@@ -140,6 +142,7 @@ while True:
                     break
             if flag:
                 error('NotFoundUser')
+    
     elif cmd == "del student":
         while_flag = True
         while while_flag:
@@ -165,28 +168,65 @@ while True:
 
     ##COMMANDS RELATED TO BOOKS
     elif cmd == "add book":
-        flag=True
-        while (flag):
-            bookName = input("please enter the chosen book's name or 'return': ")
-            if (bookName == "return"):
-                flag = False
-                continue
-            used_flag = False
-            for i in books:
-                if i.title == bookName:
-                    error("usedTitle")
-                    used_flag = True
-                    break
-            if (used_flag):
-                continue
+        new_book_data = {"title": "",
+                         "author":"",
+                         "libraryCode": "",
+                         "place": "",
+                         "number":0,
+                         "borrowPrice":0,
+                         "buyPrice":0,
+                         "borrowed":0}
+        
+        new_book_data["title"] = input("please enter the chosen book's name or 'return': ")
+        if (new_book_data["title"] == "return"):
+            continue
+        if (search_in_list_of_dicts(new_book_data["title"], books, "title")[0]):
+            add_append = input(" book(s) with the same name exist in your library, do you want to add a new one?(yes/no) \n you can also add it to the books you have using 'append book'")
+            if (add_append == "no"):
+                continue            
+        
+        new_book_data["author"] = input("pleease enter the authors name or 'return': ")
+        if (new_book_data["author"] == "return"):
+            continue
+
+        new_book_data["libraryCode"] = input("please enter the code of the book or 'return': ")
+        if (new_book_data["libraryCode"] == "return"):
+            continue
+
+        new_book_data["place"] = input("please enter the book's place or 'return': ")
+        if (new_book_data["place"] == "return"):
+            continue
+        
+        rent_while = True
+        while (rent_while):
             try:
-                bookPrice = int(input("please enter the book's price: "))
-                new_book = Book(bookName, bookPrice)
-                books.append(new_book)
-                flag = False
+                new_book_data["borrowPrice"] = int(input("please enter the book's rent price or 'return': "))
+                if (new_book_data["borrowPrice"] == "return"):
+                    break
+                rent_while = False
             except ValueError:
                 error("invalString")
-                
+                rent_while = True
+        if (rent_while):
+            continue
+
+        buy_while = True
+        while(buy_while):
+            try:
+                new_book_data["buyPrice"] = int(input("plese enter the books buying price or 'return': " ))
+                if (new_book_data["buyPrice"] == "return"):
+                    break
+                buy_while = False
+            except ValueError:
+                error("invalString")
+                buy_while = True         
+        if (buy_while):
+            continue
+        new_book_data["number"] = 1
+        books.append(new_book_data)
+        with open("books.json", 'w') as j:
+            json.dump(books, j)
+
     elif cmd == "show books":
         for i in range(len(books)):
             print(i+1,") ", end="")
